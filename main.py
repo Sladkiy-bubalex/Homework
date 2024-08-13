@@ -18,6 +18,17 @@ class Student:
             f'Средняя оценка за домашние задания: {self.aver_rate_stud(self.grades):.1f}\n'
             f'Курсы в процессе изучения: {", ".join(self.courses_in_progress)}\n'
             f'Завершенные курсы: {", ".join(self.finished_courses)}')
+    
+    def __gt__(self, other):
+        st_grade1 = self.aver_rate_stud(self.grades)
+        st_grade2 = other.aver_rate_stud(other.grades)
+        if st_grade1 > st_grade2:
+            return (f'Средняя оценка у {self.name} {self.surname} больше, '
+                    f'чем у {other.name} {other.surname}')
+        else:
+            return (f'Средняя оценка у {other.name} {other.surname} больше, '
+                    f'чем у {self.name} {self.surname}')
+
 
     def aver_rate_stud(self, grades: dict) -> float:
         all_grades = []
@@ -64,6 +75,16 @@ class Lecturer(Mentor):
             f'Имя: {self.name}\n'
             f'Фамилия: {self.surname}\n'
             f'Средняя оценка за лекции: {self.aver_rate_lect(self.lecture_gr):.1f}')
+    
+    def __lt__(self, other):
+        lt_grade1 = self.aver_rate_lect(self.lecture_gr)
+        lt_grade2 = other.aver_rate_lect(other.lecture_gr)
+        if lt_grade1 < lt_grade2:
+            return (f'Средняя оценка у {other.name} {other.surname} больше, '
+                    f'чем у {self.name} {self.surname}')
+        else:
+            return (f'Средняя оценка у {self.name} {self.surname} больше, '
+                    f'чем у {other.name} {other.surname}')
 
     def aver_rate_lect(self, grades: dict) -> float:
         all_grades = []
@@ -89,33 +110,6 @@ class Reviewer(Mentor):
                 student.grades[course] = [grade]
         else:
             return 'Ошибка'
-
-
-def stud_of_ratings(stud1_rating, stud2_rating) -> str:
-    st_grade1 = stud1_rating.aver_rate_stud(stud1_rating.grades)
-    st_grade2 = stud2_rating.aver_rate_stud(stud2_rating.grades)
-    if st_grade1 > st_grade2:
-        return (f'Средняя оценка у {stud1_rating.name} {stud1_rating.surname} больше,'
-                f'чем у {stud2_rating.name} {stud2_rating.surname}')
-    elif st_grade2 > st_grade1:
-        return (f'Средняя оценка у {stud2_rating.name} {stud2_rating.surname} больше,'
-                f'чем у {stud1_rating.name} {stud1_rating.surname}')
-    else:
-        return 'Средние оценки у студентов равны'
-
-
-def lect_of_ratings(lect1_rating, lect2_rating):
-    lt_grade1 = lect1_rating.aver_rate_lect(lect1_rating.lecture_gr)
-    lt_grade2 = lect2_rating.aver_rate_lect(lect2_rating.lecture_gr)
-    if lt_grade1 > lt_grade2:
-        return (f'Средняя оценка у {lect1_rating.name} {lect1_rating.surname} больше,'
-                f'чем у {lect2_rating.name} {lect2_rating.surname}')
-    elif lt_grade2 > lt_grade1:
-        return (f'Средняя оценка у {lect2_rating.name} {lect2_rating.surname} больше,'
-                f'чем у {lect1_rating.name} {lect1_rating.surname}')
-    else:
-        return 'Средние оценки у лекторов равны'
-
 
 
 lector1 = Lecturer('Gennadiy', 'Malyavin')
@@ -164,10 +158,9 @@ print(lector1, end='\n\n')
 lector2.aver_rate_lect(lector2.lecture_gr)
 print(lector2, end='\n\n')
 
-print(stud_of_ratings(student1,student2), end='\n\n')
+print(student1 > student2, end='\n\n')
 
-print(lect_of_ratings(lector1,lector2), end='\n\n')
-
+print(lector1 < lector2, end='\n\n')
 
 list_studets = [student1, student2]
 def aver_rate_all_stud(students: list, course: str) -> str:
